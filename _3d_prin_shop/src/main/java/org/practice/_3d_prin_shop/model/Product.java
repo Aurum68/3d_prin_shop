@@ -1,13 +1,11 @@
 package org.practice._3d_prin_shop.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -16,7 +14,7 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column
     private String name;
@@ -28,10 +26,10 @@ public class Product {
     private BigDecimal price;
 
     @Column
-    private int stock_quantity;
+    private int stock;
 
     @Column
-    private String image;
+    private String image_url;
 
     @Column
     private LocalDateTime created_at;
@@ -39,8 +37,4 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
-
-    @Getter(AccessLevel.NONE)
-    @OneToMany(mappedBy = "product")
-    private List<OrderItem> orderItems;
 }

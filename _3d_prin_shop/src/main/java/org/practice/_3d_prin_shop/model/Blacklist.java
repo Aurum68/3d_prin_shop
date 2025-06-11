@@ -1,24 +1,23 @@
 package org.practice._3d_prin_shop.model;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @Entity
-@Table(name = "categories")
-public class Category {
+@Table(name = "blacklist")
+public class Blacklist {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String name;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
+    @Column
+    private String reason;
 }

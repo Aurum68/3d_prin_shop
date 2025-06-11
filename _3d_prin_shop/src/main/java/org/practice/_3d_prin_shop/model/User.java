@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     @Column(unique = true)
     private String username;
@@ -25,11 +26,23 @@ public class User {
     private String email;
 
     @Column
-    private String full_name;
+    private String firstName;
+
+    @Column
+    private String lastName;
+
+    @Column
+    private boolean isBlacklisted;
 
     @Column
     private String role;
 
     @Column
     private LocalDateTime created_at;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Order> orders;
+
+    @OneToOne(mappedBy = "user")
+    private Cart cart;
 }

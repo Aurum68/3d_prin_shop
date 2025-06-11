@@ -20,7 +20,7 @@ public class ProductService {
         return this.productRepository.findAll();
     }
 
-    public Product getProductById(Integer id) {
+    public Product getProductById(Long id) {
         return this.productRepository.getProductById(id);
     }
 
@@ -32,7 +32,7 @@ public class ProductService {
         }
     }
 
-    public Product updateProduct(Integer id, Product product) {
+    public Product updateProduct(Long id, Product product) {
         Product oldProduct = this.productRepository.getProductById(id);
 
         if (oldProduct == null) {
@@ -43,14 +43,11 @@ public class ProductService {
         oldProduct.setDescription(product.getDescription());
         oldProduct.setPrice(product.getPrice());
         oldProduct.setCategory(product.getCategory());
-        oldProduct.setStock_quantity(product.getStock_quantity());
-        oldProduct.setImage(product.getImage());
+        oldProduct.setStock(product.getStock());
+        oldProduct.setImage_url(product.getImage_url());
 
         return this.productRepository.save(oldProduct);
     }
 
-    public void deleteProduct(Integer id) {
-        this.productRepository.deleteById(id);
-    }
-
+    public void deleteProduct(Long id) {this.productRepository.deleteProductById(id);}
 }

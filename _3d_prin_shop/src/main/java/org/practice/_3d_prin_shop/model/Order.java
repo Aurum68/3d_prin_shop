@@ -21,11 +21,11 @@ public class Order {
     private User user;
 
     @Column
-    private LocalDateTime order_date;
+    private LocalDateTime created_at;
 
     @Column
     private String status;
 
     @Column
-    private BigDecimal total;
+    private BigDecimal total_price;
 }
