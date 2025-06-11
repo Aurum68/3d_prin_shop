@@ -1,4 +1,4 @@
-package org.practice._3d_prin_shop.controller;
+package org.practice._3d_prin_shop.rest;
 
 import org.practice._3d_prin_shop.model.Product;
 import org.practice._3d_prin_shop.service.ProductService;
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
-public class ProductController {
+@RequestMapping("/api/products")
+public class ProductRestController {
 
     private final ProductService productService;
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductRestController(ProductService productService) {
         this.productService = productService;
     }
 

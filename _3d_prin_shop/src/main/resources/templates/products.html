@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Все продукты</title>
+</head>
+<body>
+<h1>Список продуктов</h1>
+<ul>
+  <li th:each="product : ${products}">
+    <span th:text="${product.name}"></span>
+    — <span th:text="${product.price}"></span> ₽
+  </li>
+</ul>
+</body>
+</html>
