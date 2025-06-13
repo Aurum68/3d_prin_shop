@@ -33,7 +33,7 @@ public class UserRestController {
         return userMapper.userToUserDto(this.userService.getUserById(id));
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public UserDto createUser(@RequestBody UserDto user) {
         User newUser = userMapper.userDtoToUser(user);
         return userMapper.userToUserDto(this.userService.addUser(newUser));

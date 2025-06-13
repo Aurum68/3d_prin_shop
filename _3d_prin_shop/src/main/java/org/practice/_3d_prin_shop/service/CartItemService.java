@@ -15,13 +15,13 @@ public class CartItemService {
     @Autowired
     public CartItemService(CartItemRepository cartItemRepository) {this.cartItemRepository = cartItemRepository;}
 
-    public CartItem addCartItem(CartItem cartItem) {return cartItemRepository.save(cartItem);}
+    public void addCartItem(CartItem cartItem) {cartItemRepository.save(cartItem);}
 
-    public CartItem updateCartItem(CartItem cartItem) {
+    public void updateCartItem(CartItem cartItem) {
         CartItem cartItemToUpdate = cartItemRepository.findById(cartItem.getId()).orElseThrow();
 
         cartItemToUpdate.setQuantity(cartItem.getQuantity());
-        return cartItemRepository.save(cartItemToUpdate);
+        cartItemRepository.save(cartItemToUpdate);
     }
 
     public void deleteCartItem(CartItem cartItem) {cartItemRepository.deleteById(cartItem.getId());}
