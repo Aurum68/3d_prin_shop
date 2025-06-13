@@ -34,7 +34,7 @@ public class User {
     @Column
     private boolean isBlacklisted;
 
-    @Column
+    @Column(nullable = false)
     private String role;
 
     @Column
