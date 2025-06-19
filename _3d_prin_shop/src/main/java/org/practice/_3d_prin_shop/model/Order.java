@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -20,12 +21,15 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
+
     @Column
-    private LocalDateTime order_date;
+    private LocalDateTime created_at;
 
     @Column
     private String status;
 
     @Column
-    private BigDecimal total;
+    private BigDecimal total_price;
 }
