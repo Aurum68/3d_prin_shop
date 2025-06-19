@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход / Регистрация</title>
+    <style>
+        .auth-form { max-width: 400px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; }
+        .auth-form input { width: 100%; padding: 10px; margin: 10px 0; }
+        .auth-form button { padding: 10px 20px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a th:href="@{/}">Главная</a>
+        </nav>
+    </header>
+    <main>
+        <!-- Ошибки авторизации -->
+        <div th:if="${param.error}" class="error">
+            Неверный email или пароль!
+        </div>
+
+        <!-- Форма входа -->
+        <form th:action="@{/login}" method="post" class="auth-form">
+            <h2>Вход</h2>
+            <input type="email" name="username" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Пароль" required>
+            <button type="submit">Войти</button>
+            <p>Нет аккаунта? <a th:href="@{/register}">Зарегистрируйтесь</a></p>
+        </form>
+
+        <!-- Форма входа для админа (если нужно разделение) -->
+        <div th:if="${isAdminPage}" class="auth-form">
+            <h2>Вход для администратора</h2>
+            <form th:action="@{/admin/login}" method="post">
+                <input type="email" name="username" placeholder="Admin Email" required>
+                <input type="password" name="password" placeholder="Пароль" required>
+                <button type="submit">Войти</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
