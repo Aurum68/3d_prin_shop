@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <style>
+        .cart-item { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #ddd; }
+        .cart-item img { width: 80px; height: auto; margin-right: 20px; }
+        .checkout-btn { padding: 15px 30px; font-size: 18px; background: #4CAF50; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a th:href="@{/}">Главная</a>
+            <a th:href="@{/account}">Личный кабинет</a>
+        </nav>
+    </header>
+    <main>
+        <h1>Корзина</h1>
+        <div th:if="${cart.items.isEmpty()}">Корзина пуста!</div>
+        <div th:each="item : ${cart.items}" class="cart-item">
+            <img th:src="@{${item.product.imageUrl}}" alt="Товар">
+            <div>
+                <h3 th:text="${item.product.name}">Товар</h3>
+                <p th:text="${item.product.price} + ' ₽'">999 ₽</p>
+                <form th:action="@{/cart/update}" method="post">
+                    <input type="hidden" name="productId" th:value="${item.product.id}">
+                    <input type="number" name="quantity" th:value="${item.quantity}" min="1">
+                    <button type="submit">Обновить</button>
+                </form>
+                <a th:href="@{/cart/remove(productId=${item.product.id})}">Удалить</a>
+            </div>
+        </div>
+        <div th:if="${!cart.items.isEmpty()}">
+            <h3>Итого: <span th:text="${cart.totalPrice} + ' ₽'">1798 ₽</span></h3>
+            <a th:href="@{/checkout}" class="checkout-btn">Оформить заказ</a>
+        </div>
+    </main>
+</body>
+</html>
