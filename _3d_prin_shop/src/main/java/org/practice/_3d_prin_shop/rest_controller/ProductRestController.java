@@ -28,7 +28,7 @@ public class ProductRestController {
         return productMapper.productsToProductDtos(products);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
         return productMapper.productToProductDto(productService.getProductById(id));
     }

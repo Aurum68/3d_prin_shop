@@ -12,6 +12,8 @@ import java.util.List;
 @Getter
 @Setter
 public class OrderDto {
+    private Long id;
+
     private User user;
     private List<OrderItem> orderItems;
 

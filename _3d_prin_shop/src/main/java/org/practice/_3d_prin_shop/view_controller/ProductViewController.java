@@ -24,7 +24,7 @@ public class ProductViewController {
         this.productMapper = productMapper;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public String products(Model model) {
         model.addAttribute("products", productMapper.productsToProductDtos(productService.getAllProducts()));
         return "products";
@@ -36,6 +36,6 @@ public class ProductViewController {
         if (product == null) return "error/404";
 
         model.addAttribute("product", product);
-        return "product-card";
+        return "product";
     }
 }

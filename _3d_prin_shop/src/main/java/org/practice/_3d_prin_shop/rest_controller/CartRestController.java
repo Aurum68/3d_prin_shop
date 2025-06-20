@@ -1,8 +1,8 @@
 package org.practice._3d_prin_shop.rest_controller;
 
-import org.practice._3d_prin_shop.dto.ProductDto;
 import org.practice._3d_prin_shop.model.Cart;
 import org.practice._3d_prin_shop.model.Product;
+import org.practice._3d_prin_shop.request.AddToCartRequest;
 import org.practice._3d_prin_shop.service.CartService;
 import org.practice._3d_prin_shop.util.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +25,9 @@ public class CartRestController {
     public Cart getCart(@PathVariable Long userId) {return cartService.getCart(userId);}
 
     @PostMapping("/{cartId}/add")
-    public Cart addItemToCart(@PathVariable Long cartId, @RequestBody ProductDto productDto, @RequestBody int quantity) {
-        Product product = productMapper.productDtoToProduct(productDto);
-        return cartService.addItemToCart(cartId, product, quantity);
+    public Cart addItemToCart(@PathVariable Long cartId, @RequestBody AddToCartRequest request) {
+        Product product = productMapper.productDtoToProduct(request.getProduct());
+        return cartService.addItemToCart(cartId, product, request.getQuantity());
     }
 
     @PutMapping("{cartId}/item/{cartItemId}")
