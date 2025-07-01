@@ -24,7 +24,7 @@ public class ProductService {
         return this.productRepository.getProductById(id);
     }
 
-    public Product saveProduct(Product product) {
+    public Product addProduct(Product product) {
         try {
             return this.productRepository.save(product);
         } catch (Exception e) {

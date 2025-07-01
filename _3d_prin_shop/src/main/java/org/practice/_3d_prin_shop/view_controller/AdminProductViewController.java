@@ -60,7 +60,7 @@ public class AdminProductViewController {
 
     @PostMapping("/add")
     public String adminProductAdd(@ModelAttribute("product") Product product, RedirectAttributes redirectAttributes) {
-        productService.saveProduct(product);
+        productService.addProduct(product);
         redirectAttributes.addFlashAttribute("success", "Product added successfully");
         return "redirect:/admin/products";
     }

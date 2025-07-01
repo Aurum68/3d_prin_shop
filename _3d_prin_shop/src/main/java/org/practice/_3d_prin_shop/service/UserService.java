@@ -24,7 +24,7 @@ public class UserService {
 
     public List<User> getAllUsers() {return this.userRepository.findAll();}
 
-    public User getUserById(Long userId) {return this.userRepository.getUserById(userId);}
+    public User getUserById(Long userId) {return this.userRepository.findById(userId).orElseThrow();}
 
     public User addUser(User user) {
         user.setRole(Roles.ROLE_USER.getRole());

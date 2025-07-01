@@ -17,7 +17,7 @@ public class AdminProductRestController {
     public AdminProductRestController(ProductService productService) {this.productService = productService;}
 
     @PostMapping
-    public Product addProduct(@RequestBody Product product) {return this.productService.saveProduct(product);}
+    public Product addProduct(@RequestBody Product product) {return this.productService.addProduct(product);}
 
     @PutMapping("/{id}")
     public Product updateProduct(@PathVariable Long id, @RequestBody Product product) {
