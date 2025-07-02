@@ -21,10 +21,10 @@ public class CartService {
         this.cartItemService = cartItemService;
     }
 
-    public Cart getCart(Long userId) {return cartRepository.findById(userId).orElseThrow();}
+    public Cart getCartById(Long userId) {return cartRepository.findById(userId).orElseThrow();}
 
     public Cart addItemToCart(Long cartId, Product product, int quantity) {
-        Cart cart = getCart(cartId);
+        Cart cart = getCartById(cartId);
 
         Optional<CartItem> byProduct = cart.getCartItems().stream()
                 .filter(item -> item.getProduct().equals(product))
@@ -33,11 +33,9 @@ public class CartService {
         if (byProduct.isPresent()) {
 
             CartItem item = byProduct.get();
-            item.setQuantity(item.getQuantity() + quantity);
-            cartItemService.updateCartItem(item);
+            updateCartItemQuantity(cartId, item.getId(), item.getQuantity() + quantity);
 
         }else{
-
             CartItem item = new CartItem();
             item.setProduct(product);
             item.setQuantity(quantity);
@@ -47,23 +45,23 @@ public class CartService {
             cart.getCartItems().add(item);
             cartRepository.save(cart);
         }
-
         return cart;
     }
 
     public Cart updateCartItemQuantity(Long cartId, Long cartItemId, int quantity) {
-        Cart cart = getCart(cartId);
+        Cart cart = getCartById(cartId);
         CartItem cartItem = cartItemService.getCartItemById(cartItemId);
         if (!cartItem.getCart().equals(cart)) throw new RuntimeException("CartItem is not in the cart");
 
         cartItem.setQuantity(quantity);
-        cartItemService.updateCartItem(cartItem);
+        cartItemService.updateCartItem(cartItem.getId(), cartItem);
+        cartRepository.save(cart);
         return cart;
     }
 
     public void deleteCartItem(Long cartId, Long cartItemId) {
-        Cart cart = getCart(cartId);
+        Cart cart = getCartById(cartId);
         if (!cartItemService.getCartItemById(cartItemId).getCart().equals(cart)) throw new RuntimeException("CartItem is not in the cart");
-        cartItemService.deleteCartItem(cartItemService.getCartItemById(cartItemId));
+        cartItemService.deleteCartItem(cartItemId);
     }
 }

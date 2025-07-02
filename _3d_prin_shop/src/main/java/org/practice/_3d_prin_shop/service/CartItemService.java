@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class CartItemService {
@@ -15,16 +16,21 @@ public class CartItemService {
     @Autowired
     public CartItemService(CartItemRepository cartItemRepository) {this.cartItemRepository = cartItemRepository;}
 
-    public void addCartItem(CartItem cartItem) {cartItemRepository.save(cartItem);}
-
-    public void updateCartItem(CartItem cartItem) {
-        CartItem cartItemToUpdate = cartItemRepository.findById(cartItem.getId()).orElseThrow();
-
-        cartItemToUpdate.setQuantity(cartItem.getQuantity());
-        cartItemRepository.save(cartItemToUpdate);
+    public CartItem addCartItem(CartItem cartItem) {
+        cartItemRepository.save(cartItem);
+        return cartItem;
     }
 
-    public void deleteCartItem(CartItem cartItem) {cartItemRepository.deleteById(cartItem.getId());}
+    public CartItem updateCartItem(Long id, CartItem cartItem) {
+        CartItem cartItemToUpdate = cartItemRepository.findById(id).orElseThrow();
+
+        if (!Objects.equals(cartItem.getProduct().getId(), cartItemToUpdate.getProduct().getId())) throw new IllegalArgumentException("Product id not match");
+        cartItemToUpdate.setQuantity(cartItem.getQuantity());
+        cartItemRepository.save(cartItemToUpdate);
+        return cartItemToUpdate;
+    }
+
+    public void deleteCartItem(Long id) {cartItemRepository.deleteById(id);}
 
     public List<CartItem> getAllCartItems() {return cartItemRepository.findAll();}
 

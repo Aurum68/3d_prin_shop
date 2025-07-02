@@ -22,7 +22,7 @@ public class CartRestController {
     }
 
     @GetMapping("/{userId}")
-    public Cart getCart(@PathVariable Long userId) {return cartService.getCart(userId);}
+    public Cart getCart(@PathVariable Long userId) {return cartService.getCartById(userId);}
 
     @PostMapping("/{cartId}/add")
     public Cart addItemToCart(@PathVariable Long cartId, @RequestBody AddToCartRequest request) {

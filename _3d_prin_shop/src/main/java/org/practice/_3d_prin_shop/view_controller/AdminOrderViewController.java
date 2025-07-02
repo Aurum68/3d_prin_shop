@@ -19,7 +19,7 @@ public class AdminOrderViewController {
 
     @GetMapping
     public String order(Model model) {
-        model.addAllAttributes(orderService.findAll());
+        model.addAllAttributes(orderService.getAllOrders());
         return "admin/order";
     }
 }

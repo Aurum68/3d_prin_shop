@@ -24,15 +24,15 @@ public class OrderService {
         this.orderItemService = orderItemService;
     }
 
-    public List<Order> findAll() {return orderRepository.findAll();}
+    public List<Order> getAllOrders() {return orderRepository.findAll();}
 
-    public List<Order> findByUserId(Long userId) {
+    public List<Order> getByUserId(Long userId) {
         return orderRepository.findAll().stream()
                 .filter(order -> order.getUser().getId().equals(userId))
                 .collect(Collectors.toList());
     }
 
-    public Order getOrder(Long id) {return orderRepository.findById(id).orElseThrow();}
+    public Order getOrderById(Long id) {return orderRepository.findById(id).orElseThrow();}
 
     public Order createOrder(Order order) {
         order.setStatus(OrderStatus.PENDING_APPROVAL.getStatus());
@@ -45,18 +45,17 @@ public class OrderService {
                 .filter(oi -> oi.getProduct().equals(product))
                 .findFirst();
 
-        if (byProduct.isEmpty()) {
+        if (byProduct.isPresent()) throw new IllegalArgumentException("Product already exists");
 
-            OrderItem orderItem = new OrderItem();
-            orderItem.setProduct(product);
-            orderItem.setQuantity(quantity);
-            orderItem.setOrder(order);
-            orderItem.setPrice(product.getPrice().multiply(new BigDecimal(quantity)));
-            orderItemService.addOrderItem(orderItem);
-            order.getOrderItems().add(orderItem);
-            orderRepository.save(order);
-        }
-        return order;
+        OrderItem orderItem = new OrderItem();
+        orderItem.setProduct(product);
+        orderItem.setQuantity(quantity);
+        orderItem.setOrder(order);
+        orderItem.setPrice(product.getPrice().multiply(new BigDecimal(quantity)));
+        OrderItem newItem = orderItemService.addOrderItem(orderItem);
+        order.getOrderItems().add(newItem);
+
+        return orderRepository.save(order);
     }
 
     public Order updateOrder(Long orderId, Order order) {

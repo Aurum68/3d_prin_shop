@@ -22,7 +22,7 @@ public class CartViewController {
 
     @GetMapping("/{cartId}")
     public String cart(@PathVariable Long cartId, Model model) {
-        Cart cart = cartService.getCart(cartId);
+        Cart cart = cartService.getCartById(cartId);
         if (cart == null) throw new RuntimeException("Cart not found");
         model.addAttribute("cart", cart);
         return "cart";

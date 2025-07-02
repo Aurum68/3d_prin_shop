@@ -24,7 +24,7 @@ public class OrderViewController {
 
     @GetMapping("/{orderId}")
     public String showOrder(@PathVariable Long orderId, Model model) {
-        Order order = orderService.getOrder(orderId);
+        Order order = orderService.getOrderById(orderId);
         if (order == null) return "error/404";
 
         model.addAttribute("order", orderMapper.orderToOrderDto(order));

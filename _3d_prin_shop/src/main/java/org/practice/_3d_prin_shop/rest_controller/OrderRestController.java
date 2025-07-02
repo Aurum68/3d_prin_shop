@@ -28,12 +28,12 @@ public class OrderRestController {
 
     @GetMapping("/orders_of{userId}")
     public List<OrderDto> getOrdersOfUser(@PathVariable Long userId) {
-        return orderMapper.ordersToOrderDtos(orderService.findByUserId(userId));
+        return orderMapper.ordersToOrderDtos(orderService.getByUserId(userId));
     }
 
     @GetMapping("/{orderId}")
     public OrderDto getOrder(@PathVariable Long orderId) {
-        return orderMapper.orderToOrderDto(orderService.getOrder(orderId));
+        return orderMapper.orderToOrderDto(orderService.getOrderById(orderId));
     }
 
     @PostMapping("/add")
