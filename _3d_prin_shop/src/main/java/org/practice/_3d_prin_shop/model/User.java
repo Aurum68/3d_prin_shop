@@ -34,6 +34,9 @@ public class User {
     @Column
     private boolean isBlacklisted;
 
+    @Column
+    private String blockedReason;
+
     @Column(nullable = false)
     private String role;
 

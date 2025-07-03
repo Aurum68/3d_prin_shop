@@ -8,8 +8,11 @@ import org.practice._3d_prin_shop.service.OrderService;
 import org.practice._3d_prin_shop.util.OrderMapper;
 import org.practice._3d_prin_shop.util.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @RestController
@@ -28,7 +31,7 @@ public class OrderRestController {
 
     @GetMapping("/orders_of{userId}")
     public List<OrderDto> getOrdersOfUser(@PathVariable Long userId) {
-        return orderMapper.ordersToOrderDtos(orderService.getByUserId(userId));
+        return orderMapper.toDtoList(orderService.getByUserId(userId));
     }
 
     @GetMapping("/{orderId}")
@@ -37,9 +40,15 @@ public class OrderRestController {
     }
 
     @PostMapping("/add")
-    public OrderDto createOrder(@RequestBody OrderDto orderDto) {
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
         Order order = orderMapper.orderDtoToOrder(orderDto);
-        return orderMapper.orderToOrderDto(orderService.createOrder(order));
+        Order result;
+        try {
+            result = orderService.createOrder(order);
+            return ResponseEntity.ok(orderMapper.orderToOrderDto(result));
+        }catch (AccessDeniedException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @PostMapping("/{orderId}/add")

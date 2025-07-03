@@ -25,7 +25,7 @@ public class ProductRestController {
     @GetMapping
     public List<ProductDto> getAllProducts() {
         List<Product> products = productService.getAllProducts();
-        return productMapper.productsToProductDtos(products);
+        return productMapper.toDtoList(products);
     }
 
     @GetMapping("/{id}")

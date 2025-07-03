@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -34,7 +35,8 @@ public class OrderService {
 
     public Order getOrderById(Long id) {return orderRepository.findById(id).orElseThrow();}
 
-    public Order createOrder(Order order) {
+    public Order createOrder(Order order) throws AccessDeniedException {
+        if (order.getUser().isBlacklisted()) throw new AccessDeniedException(String.format("Вы заблокированы. Причина: %s", order.getUser().getBlockedReason()));
         order.setStatus(OrderStatus.PENDING_APPROVAL.getStatus());
         return orderRepository.save(order);}
 

@@ -6,7 +6,11 @@ import org.practice._3d_prin_shop.request.AddToCartRequest;
 import org.practice._3d_prin_shop.service.CartService;
 import org.practice._3d_prin_shop.util.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.file.AccessDeniedException;
 
 @RestController
 @RequestMapping("/api/cart")
@@ -25,9 +29,14 @@ public class CartRestController {
     public Cart getCart(@PathVariable Long userId) {return cartService.getCartById(userId);}
 
     @PostMapping("/{cartId}/add")
-    public Cart addItemToCart(@PathVariable Long cartId, @RequestBody AddToCartRequest request) {
+    public ResponseEntity<Cart> addItemToCart(@PathVariable Long cartId, @RequestBody AddToCartRequest request) {
         Product product = productMapper.productDtoToProduct(request.getProduct());
-        return cartService.addItemToCart(cartId, product, request.getQuantity());
+        try {
+            Cart cart = cartService.addItemToCart(cartId, product, request.getQuantity());
+            return ResponseEntity.ok(cart);
+        }catch (AccessDeniedException e){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @PutMapping("{cartId}/item/{cartItemId}")

@@ -7,6 +7,7 @@ import org.practice._3d_prin_shop.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Optional;
 
 @Service
@@ -23,8 +24,10 @@ public class CartService {
 
     public Cart getCartById(Long userId) {return cartRepository.findById(userId).orElseThrow();}
 
-    public Cart addItemToCart(Long cartId, Product product, int quantity) {
+    public Cart addItemToCart(Long cartId, Product product, int quantity) throws AccessDeniedException {
         Cart cart = getCartById(cartId);
+
+        if (cart.getUser().isBlacklisted()) throw new AccessDeniedException(String.format("Вы заблокированы. Причина: %s", cart.getUser().getBlockedReason()));
 
         Optional<CartItem> byProduct = cart.getCartItems().stream()
                 .filter(item -> item.getProduct().equals(product))

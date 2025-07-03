@@ -50,6 +50,20 @@ public class UserService {
         return this.userRepository.save(u);
     }
 
+    public User blockUserById(Long id, String reason) {
+        User u = this.userRepository.findById(id).orElseThrow();
+        u.setBlacklisted(true);
+        u.setBlockedReason(reason);
+        return this.userRepository.save(u);
+    }
+
+    public User unblockUserById(Long id) {
+        User u = this.userRepository.findById(id).orElseThrow();
+        u.setBlacklisted(false);
+        u.setBlockedReason(null);
+        return this.userRepository.save(u);
+    }
+
     public void deleteUserById(Long id) {
         this.userRepository.deleteById(id);
     }

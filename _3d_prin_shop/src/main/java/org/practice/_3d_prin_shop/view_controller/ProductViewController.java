@@ -1,7 +1,6 @@
 package org.practice._3d_prin_shop.view_controller;
 
 import org.practice._3d_prin_shop.dto.ProductDto;
-import org.practice._3d_prin_shop.model.Product;
 import org.practice._3d_prin_shop.service.ProductService;
 import org.practice._3d_prin_shop.util.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class ProductViewController {
 
     @GetMapping
     public String products(Model model) {
-        model.addAttribute("products", productMapper.productsToProductDtos(productService.getAllProducts()));
+        model.addAttribute("products", productMapper.toDtoList(productService.getAllProducts()));
         return "products";
     }
 

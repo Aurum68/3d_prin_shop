@@ -22,7 +22,7 @@ public class UserRestController {
         this.userMapper = userMapper;
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<UserDto> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return userMapper.toDtoList(users);
@@ -36,16 +36,16 @@ public class UserRestController {
     @PostMapping("/add")
     public UserDto createUser(@RequestBody UserDto user) {
         User newUser = userMapper.userDtoToUser(user);
-        return userMapper.userToUserDto(this.userService.addUser(newUser));
+        UserDto userDto = userMapper.userToUserDto(this.userService.addUser(newUser));
+        System.err.println(userDto);
+        return userDto;
     }
 
     @PutMapping("/{id}")
     public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto user) {
-        User userToUpdate = userMapper.userDtoToUser(user);
-        return userMapper.userToUserDto(this.userService.updateUserById(id, userToUpdate));
+        User userUpdates = userMapper.userDtoToUser(user);
+        User updatedUser = this.userService.updateUserById(id, userUpdates);
+        System.err.println(updatedUser);
+        return userMapper.userToUserDto(updatedUser);
     }
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {this.userService.deleteUserById(id);}
-
 }

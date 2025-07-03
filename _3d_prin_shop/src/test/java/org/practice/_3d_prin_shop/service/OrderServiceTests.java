@@ -12,6 +12,7 @@ import org.practice._3d_prin_shop.repository.OrderRepository;
 import org.practice._3d_prin_shop.util.OrderStatus;
 
 import java.math.BigDecimal;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -84,16 +85,38 @@ public class OrderServiceTests {
     }
 
     @Test
-    void testCreateOrder() {
+    void testCreateOrder_success() {
+        User user = new User();
+        user.setBlacklisted(false);
+
         Order order = new Order();
+        order.setUser(user);
 
         Mockito.when(orderRepository.save(order)).thenReturn(order);
 
-        Order result = orderService.createOrder(order);
+        Order result;
+        try {
+            result = orderService.createOrder(order);
+        }catch (AccessDeniedException e){
+            result = null;
+            System.err.println(e.getMessage());
+        }
 
         Assertions.assertEquals(order, result);
         Assertions.assertEquals(order.getStatus(), OrderStatus.PENDING_APPROVAL.getStatus());
         Mockito.verify(orderRepository).save(order);
+    }
+
+    @Test
+    void testCreateOrder_fail() {
+        User user = new User();
+        user.setBlacklisted(true);
+        user.setBlockedReason("Blocked Reason");
+
+        Order order = new Order();
+        order.setUser(user);
+
+        Assertions.assertThrows(AccessDeniedException.class, () -> orderService.createOrder(order));
     }
 
     @Test
