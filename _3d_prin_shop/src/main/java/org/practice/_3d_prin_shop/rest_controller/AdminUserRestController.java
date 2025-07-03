@@ -3,6 +3,7 @@ package org.practice._3d_prin_shop.rest_controller;
 import org.practice._3d_prin_shop.model.User;
 import org.practice._3d_prin_shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ public class AdminUserRestController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable Long id) {
         this.userService.deleteUserById(id);
     }
