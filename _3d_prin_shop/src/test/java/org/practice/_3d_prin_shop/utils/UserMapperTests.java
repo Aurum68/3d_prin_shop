@@ -27,7 +27,7 @@ public class UserMapperTests {
         user.setEmail("email@email.com");
         user.setFirstName("firstName");
         user.setLastName("lastName");
-        user.setBlacklisted(false);
+        user.setBlocked(false);
         user.setRole(Roles.ROLE_USER.getRole());
 
         UserDto userDto = userMapper.userToUserDto(user);

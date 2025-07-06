@@ -11,6 +11,7 @@ import java.util.List;
 public interface UserMapper {
 
     @Mapping(source = "id", target = "id")
+    @Mapping(target = "password", ignore = true)
     UserDto userToUserDto(User user);
     User userDtoToUser(UserDto userDto);
     List<UserDto> toDtoList(List<User> users);

@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.practice._3d_prin_shop.model.User;
 import org.practice._3d_prin_shop.repository.UserRepository;
+import org.practice._3d_prin_shop.security.UserDetailsServiceImpl;
 import org.practice._3d_prin_shop.util.Roles;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

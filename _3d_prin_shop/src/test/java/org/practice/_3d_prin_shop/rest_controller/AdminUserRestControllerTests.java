@@ -45,7 +45,7 @@ public class AdminUserRestControllerTests {
 
         User blockedUser = new User();
         blockedUser.setId(1L);
-        blockedUser.setBlacklisted(true);
+        blockedUser.setBlocked(true);
         blockedUser.setBlockedReason(reason);
 
         Mockito.when(userService.blockUserById(1L, reason)).thenReturn(blockedUser);
@@ -65,7 +65,7 @@ public class AdminUserRestControllerTests {
     void testUnblockUser() throws Exception {
         User unblockedUser = new User();
         unblockedUser.setId(1L);
-        unblockedUser.setBlacklisted(false);
+        unblockedUser.setBlocked(false);
 
         Mockito.when(userService.unblockUserById(1L)).thenReturn(unblockedUser);
 

@@ -8,6 +8,7 @@ import org.practice._3d_prin_shop.util.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -26,8 +27,12 @@ public class UserService {
 
     public User getUserById(Long userId) {return this.userRepository.findById(userId).orElseThrow();}
 
+    public User getUserByUsername(String username) {return userRepository.findByUsername(username).orElseThrow();}
+
     public User addUser(User user) {
         user.setRole(Roles.ROLE_USER.getRole());
+        user.setBlocked(false);
+        user.setCreated_at(LocalDateTime.now());
         this.userRepository.save(user);
 
         Cart cart = new Cart();
@@ -52,14 +57,14 @@ public class UserService {
 
     public User blockUserById(Long id, String reason) {
         User u = this.userRepository.findById(id).orElseThrow();
-        u.setBlacklisted(true);
+        u.setBlocked(true);
         u.setBlockedReason(reason);
         return this.userRepository.save(u);
     }
 
     public User unblockUserById(Long id) {
         User u = this.userRepository.findById(id).orElseThrow();
-        u.setBlacklisted(false);
+        u.setBlocked(false);
         u.setBlockedReason(null);
         return this.userRepository.save(u);
     }

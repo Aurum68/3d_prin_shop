@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,7 +32,7 @@ public class User {
     private String lastName;
 
     @Column
-    private boolean isBlacklisted;
+    private boolean isBlocked;
 
     @Column
     private String blockedReason;
@@ -44,7 +44,7 @@ public class User {
     private LocalDateTime created_at;
 
     @OneToMany(mappedBy = "user")
-    private Set<Order> orders;
+    private List<Order> orders;
 
     @OneToOne(mappedBy = "user")
     private Cart cart;

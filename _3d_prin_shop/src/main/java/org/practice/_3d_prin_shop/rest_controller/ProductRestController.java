@@ -30,6 +30,7 @@ public class ProductRestController {
 
     @GetMapping("/{id}")
     public ProductDto getProductById(@PathVariable Long id) {
-        return productMapper.productToProductDto(productService.getProductById(id));
+        Product product = productService.getProductById(id);
+        return productMapper.productToProductDto(product);
     }
 }

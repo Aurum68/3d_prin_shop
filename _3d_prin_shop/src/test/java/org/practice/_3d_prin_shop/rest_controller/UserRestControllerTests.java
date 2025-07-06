@@ -74,6 +74,9 @@ public class UserRestControllerTests {
                 .andExpect(jsonPath("$[1].username").value("Bill"))
                 .andExpect(jsonPath("$[1].password").value("BillPassword"))
                 .andExpect(jsonPath("$[1].email").value("Bill@gmail.com"));
+
+        Mockito.verify(userService).getAllUsers();
+        Mockito.verify(userMapper).toDtoList(users);
     }
 
     private static List<User> getUsers() {
@@ -117,6 +120,9 @@ public class UserRestControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1))
                 .andExpect(jsonPath("$.username").value("Bob"));
+
+        Mockito.verify(userService).getUserById(1L);
+        Mockito.verify(userMapper).userToUserDto(user);
     }
 
     @Test
@@ -149,6 +155,10 @@ public class UserRestControllerTests {
                 .andExpect(jsonPath("$.username").value("Bob"))
                 .andExpect(jsonPath("$.password").value("password"))
                 .andExpect(jsonPath("$.email").value("Bob@gmail.com"));
+
+        Mockito.verify(userMapper).userDtoToUser(Mockito.any(UserDto.class));
+        Mockito.verify(userService).addUser(user);
+        Mockito.verify(userMapper).userToUserDto(Mockito.any(User.class));
     }
 
     @Test
@@ -187,5 +197,9 @@ public class UserRestControllerTests {
                 .andExpect(jsonPath("$.username").value("Bob"))
                 .andExpect(jsonPath("$.password").value("newPassword"))
                 .andExpect(jsonPath("$.email").value("Bob@gmail.com"));
+
+        Mockito.verify(userMapper).userDtoToUser(Mockito.any(UserDto.class));
+        Mockito.verify(userService).updateUserById(1L, userUpdate);
+        Mockito.verify(userMapper).userToUserDto(Mockito.any(User.class));
     }
 }

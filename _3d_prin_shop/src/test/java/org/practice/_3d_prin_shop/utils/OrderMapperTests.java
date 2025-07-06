@@ -29,7 +29,7 @@ public class OrderMapperTests {
         OrderDto orderDto = orderMapper.orderToOrderDto(order);
 
         Assertions.assertEquals(order.getId(), orderDto.getId());
-        Assertions.assertEquals(order.getUser(), orderDto.getUser());
+        Assertions.assertEquals(order.getUser().getId(), orderDto.getUserId());
     }
 
     @Test
@@ -38,12 +38,12 @@ public class OrderMapperTests {
 
         OrderDto orderDto = new OrderDto();
         orderDto.setId(1L);
-        orderDto.setUser(user);
+        orderDto.setUserId(user.getId());
 
         Order order = orderMapper.orderDtoToOrder(orderDto);
 
         Assertions.assertEquals(order.getId(), orderDto.getId());
-        Assertions.assertEquals(order.getUser(), orderDto.getUser());
+        Assertions.assertEquals(order.getUser().getId(), orderDto.getUserId());
     }
 
     @Test

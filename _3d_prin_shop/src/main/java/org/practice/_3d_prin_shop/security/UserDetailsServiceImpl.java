@@ -1,4 +1,4 @@
-package org.practice._3d_prin_shop.service;
+package org.practice._3d_prin_shop.security;
 
 import org.practice._3d_prin_shop.model.User;
 import org.practice._3d_prin_shop.repository.UserRepository;

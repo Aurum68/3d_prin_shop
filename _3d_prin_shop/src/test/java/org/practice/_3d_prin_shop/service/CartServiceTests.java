@@ -12,8 +12,8 @@ import org.practice._3d_prin_shop.model.CartItem;
 import org.practice._3d_prin_shop.model.Product;
 import org.practice._3d_prin_shop.model.User;
 import org.practice._3d_prin_shop.repository.CartRepository;
+import org.springframework.security.access.AccessDeniedException;
 
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +46,7 @@ public class CartServiceTests {
     @Test
     void testAddNewItemToCart_success(){
         User user = new User();
-        user.setBlacklisted(false);
+        user.setBlocked(false);
 
         Cart cart = new Cart();
         cart.setId(1L);
@@ -89,7 +89,7 @@ public class CartServiceTests {
     @Test
     void testAddNewItemToCart_failure(){
         User user = new User();
-        user.setBlacklisted(true);
+        user.setBlocked(true);
         user.setBlockedReason("Blocked Reason");
 
         Cart cart = new Cart();
@@ -115,7 +115,7 @@ public class CartServiceTests {
     @Test
     void testAddExistingItemToCart_success(){
         User user = new User();
-        user.setBlacklisted(false);
+        user.setBlocked(false);
 
         Cart cart = new Cart();
         cart.setId(1L);
@@ -160,7 +160,7 @@ public class CartServiceTests {
     @Test
     void testAddExistingItemToCart_failure(){
         User user = new User();
-        user.setBlacklisted(true);
+        user.setBlocked(true);
         user.setBlockedReason("Blocked Reason");
 
         Cart cart = new Cart();

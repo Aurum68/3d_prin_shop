@@ -7,12 +7,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.practice._3d_prin_shop.dto.OrderDto;
 import org.practice._3d_prin_shop.model.*;
 import org.practice._3d_prin_shop.repository.OrderRepository;
+import org.practice._3d_prin_shop.repository.UserRepository;
+import org.practice._3d_prin_shop.util.OrderMapper;
 import org.practice._3d_prin_shop.util.OrderStatus;
+import org.practice._3d_prin_shop.util.Roles;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.math.BigDecimal;
-import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +29,13 @@ public class OrderServiceTests {
     private OrderRepository orderRepository;
 
     @Mock
+    private UserRepository userRepository;
+
+    @Mock
     private OrderItemService orderItemService;
+
+    @Mock
+    private OrderMapper orderMapper;
 
     @InjectMocks
     private OrderService orderService;
@@ -87,16 +97,22 @@ public class OrderServiceTests {
     @Test
     void testCreateOrder_success() {
         User user = new User();
-        user.setBlacklisted(false);
+        user.setId(1L);
+        user.setBlocked(false);
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setUserId(user.getId());
 
         Order order = new Order();
         order.setUser(user);
 
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        Mockito.when(orderMapper.orderDtoToOrder(Mockito.any(OrderDto.class))).thenReturn(order);
         Mockito.when(orderRepository.save(order)).thenReturn(order);
 
         Order result;
         try {
-            result = orderService.createOrder(order);
+            result = orderService.createOrder(orderDto);
         }catch (AccessDeniedException e){
             result = null;
             System.err.println(e.getMessage());
@@ -104,19 +120,29 @@ public class OrderServiceTests {
 
         Assertions.assertEquals(order, result);
         Assertions.assertEquals(order.getStatus(), OrderStatus.PENDING_APPROVAL.getStatus());
+
+        Mockito.verify(userRepository).findById(user.getId());
+        Mockito.verify(orderMapper).orderDtoToOrder(orderDto);
         Mockito.verify(orderRepository).save(order);
     }
 
     @Test
     void testCreateOrder_fail() {
         User user = new User();
-        user.setBlacklisted(true);
+        user.setId(1L);
+        user.setBlocked(true);
         user.setBlockedReason("Blocked Reason");
+
+        OrderDto orderDto = new OrderDto();
+        orderDto.setUserId(user.getId());
 
         Order order = new Order();
         order.setUser(user);
 
-        Assertions.assertThrows(AccessDeniedException.class, () -> orderService.createOrder(order));
+        Mockito.when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+        Mockito.when(orderMapper.orderDtoToOrder(Mockito.any(OrderDto.class))).thenReturn(order);
+
+        Assertions.assertThrows(AccessDeniedException.class, () -> orderService.createOrder(orderDto));
     }
 
     @Test
@@ -169,39 +195,69 @@ public class OrderServiceTests {
     }
 
     @Test
-    void testUpdateOrder() {
+    void testSetOrderStatus_success() throws AccessDeniedException {
         Order order = new Order();
         order.setId(1L);
         order.setStatus(OrderStatus.PENDING_APPROVAL.getStatus());
 
-        Order order2 = new Order();
-        order2.setId(2L);
-        order2.setStatus(OrderStatus.ACTIVE.getStatus());
+        User user = new User();
+        user.setId(1L);
+        user.setRole(Roles.ROLE_ADMIN.getRole());
+
+        order.setUser(user);
 
         Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
         Mockito.when(orderRepository.save(order)).thenReturn(order);
 
-        Order result = orderService.updateOrder(1L, order2);
+        Order result = orderService.setOrderStatus(1L, OrderStatus.ACTIVE, user);
 
         Assertions.assertEquals(order, result);
-        Assertions.assertEquals(order.getStatus(), OrderStatus.ACTIVE.getStatus());
+        Assertions.assertEquals(result.getStatus(), OrderStatus.ACTIVE.getStatus());
 
         Mockito.verify(orderRepository).findById(1L);
         Mockito.verify(orderRepository).save(order);
     }
 
     @Test
-    void testCancelOrder() {
+    void testSetOrderStatus_fail() {
         Order order = new Order();
         order.setId(1L);
         order.setStatus(OrderStatus.PENDING_APPROVAL.getStatus());
 
+        User user = new User();
+        user.setId(1L);
+        user.setRole(Roles.ROLE_USER.getRole());
+
+        order.setUser(user);
+
         Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
 
-        orderService.cancelOrder(1L);
-
-        Assertions.assertEquals(OrderStatus.CANCELLED.getStatus(), order.getStatus());
+        Assertions.assertThrows(AccessDeniedException.class, () -> orderService.setOrderStatus(1L, OrderStatus.ACTIVE, user));
 
         Mockito.verify(orderRepository).findById(1L);
+    }
+
+    @Test
+    void testCancelOrder_success() throws AccessDeniedException {
+        Order order = new Order();
+        order.setId(1L);
+        order.setStatus(OrderStatus.PENDING_APPROVAL.getStatus());
+
+        User user = new User();
+        user.setId(1L);
+        user.setRole(Roles.ROLE_USER.getRole());
+
+        order.setUser(user);
+
+        Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.of(order));
+        Mockito.when(orderRepository.save(order)).thenReturn(order);
+
+        Order result = orderService.cancelOrder(1L, user);
+
+        Assertions.assertEquals(order, result);
+        Assertions.assertEquals(OrderStatus.CANCELLED.getStatus(), result.getStatus());
+
+        Mockito.verify(orderRepository).findById(1L);
+        Mockito.verify(orderRepository).save(order);
     }
 }

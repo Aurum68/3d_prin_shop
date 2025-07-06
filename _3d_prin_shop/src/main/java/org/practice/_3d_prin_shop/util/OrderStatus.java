@@ -13,4 +13,12 @@ public enum OrderStatus {
     OrderStatus(String status) {
         this.status = status;
     }
+
+    public static OrderStatus fromString(String status) {
+        for (OrderStatus orderStatus : OrderStatus.values()) {
+            if (orderStatus.getStatus().equalsIgnoreCase(status)) return orderStatus;
+        }
+
+        throw new IllegalArgumentException("Invalid order status: " + status);
+    }
 }

@@ -3,6 +3,7 @@ package org.practice._3d_prin_shop.rest_controller;
 import org.practice._3d_prin_shop.model.Product;
 import org.practice._3d_prin_shop.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,7 +17,7 @@ public class AdminProductRestController {
     @Autowired
     public AdminProductRestController(ProductService productService) {this.productService = productService;}
 
-    @PostMapping
+    @PostMapping("/add")
     public Product addProduct(@RequestBody Product product) {return this.productService.addProduct(product);}
 
     @PutMapping("/{id}")
@@ -25,5 +26,6 @@ public class AdminProductRestController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProduct(@PathVariable Long id) {this.productService.deleteProduct(id);}
 }

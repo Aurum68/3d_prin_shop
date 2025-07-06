@@ -1,6 +1,5 @@
-package org.practice._3d_prin_shop.conf;
+package org.practice._3d_prin_shop.security;
 
-import org.practice._3d_prin_shop.service.UserDetailsServiceImpl;
 import org.practice._3d_prin_shop.util.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +29,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/", "/products/**", "/login", "/register", "/css/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/api/products","/api/products/**", "/products/**", "/login", "/register", "/css/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()
                         .requestMatchers("**/admin/**").hasRole(Roles.ROLE_ADMIN.getRole())
                         .anyRequest().authenticated()
