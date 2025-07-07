@@ -41,20 +41,20 @@ public class AdminOrderViewController {
     public String ordersOfUser(@PathVariable Long userId, Model model) {
         List<Order> orders = orderService.getByUserId(userId);
         model.addAttribute("orders", orders);
-        return "admin/orders";
+        return "admin/orders-of-user";
     }
 
     @GetMapping("/all")
     public String all(Model model) {
         model.addAttribute("orders", orderService.getAllOrders());
-        return "admin/all";
+        return "admin/orders-all";
     }
 
     @GetMapping("/new_orders")
     public String newOrders(Model model) {
         List<Order> orders = orderService.getByStatus(OrderStatus.PENDING_APPROVAL.getStatus());
         model.addAttribute("orders", orders);
-        return "admin/new_orders";
+        return "admin/orders-new";
     }
 
     @PostMapping("/{id}/cancel")

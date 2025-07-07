@@ -9,13 +9,9 @@ import org.practice._3d_prin_shop.util.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.ViewResolver;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -23,17 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @WebMvcTest(controllers = UserViewController.class)
 public class UserViewControllerTest {
-
-    @TestConfiguration
-    static class UserViewControllerTestConfiguration {
-        @Bean
-        @Primary
-        public ViewResolver viewResolver() {
-            return ((viewName, locale) -> (model, request, response) -> {
-
-            });
-        }
-    }
 
     @MockitoBean
     private UserService userService;
@@ -60,7 +45,7 @@ public class UserViewControllerTest {
 
         mockMvc.perform(get("/user-profile/{id}", 1L))
                 .andExpect(status().isOk())
-                .andExpect(view().name("user-profile"))
+                .andExpect(view().name("account"))
                 .andExpect(model().attribute("user", userDto));
 
         Mockito.verify(userService).getUserById(1L);

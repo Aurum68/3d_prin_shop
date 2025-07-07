@@ -1,6 +1,7 @@
 package org.practice._3d_prin_shop.security;
 
 import org.practice._3d_prin_shop.model.User;
+import org.practice._3d_prin_shop.util.OrderStatus;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,8 @@ public class UserPrincipal implements UserDetails {
     public Long getId() {return user.getId();}
 
     public String getEmail() {return user.getEmail();}
+
+    public String getRole() {return user.getRole();}
 
     public String getFirstName() {return user.getFirstName();}
 
