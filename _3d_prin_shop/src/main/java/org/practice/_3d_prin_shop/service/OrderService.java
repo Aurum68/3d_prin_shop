@@ -43,6 +43,10 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
+    public List<Order> getByStatus(String status) {
+        return orderRepository.findByStatus(status).orElseThrow();
+    }
+
     public Order getOrderById(Long id) {return orderRepository.findById(id).orElseThrow();}
 
     public Order createOrder(OrderDto orderDto) throws AccessDeniedException {

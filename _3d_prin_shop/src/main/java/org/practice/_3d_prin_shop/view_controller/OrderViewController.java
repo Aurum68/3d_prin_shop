@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/order")
 public class OrderViewController {
@@ -29,5 +31,12 @@ public class OrderViewController {
 
         model.addAttribute("order", orderMapper.orderToOrderDto(order));
         return "order";
+    }
+
+    @GetMapping("/orders_of{userId}")
+    public String showOrdersOfUser(@PathVariable Long userId, Model model) {
+        List<Order> orders = orderService.getByUserId(userId);
+        model.addAttribute("orders", orderMapper.toDtoList(orders));
+        return "orders";
     }
 }
