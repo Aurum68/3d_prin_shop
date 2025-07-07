@@ -28,7 +28,7 @@ public class UserViewController {
         UserDto user = userMapper.userToUserDto(userService.getUserById(id));
         if(user == null) return "error/404";
 
-        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("user", user);
         return "user-profile";
     }
 
@@ -37,7 +37,7 @@ public class UserViewController {
         UserDto user = userMapper.userToUserDto(userService.getUserById(id));
         if(user == null) return "error/404";
 
-        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("user", user);
         return "user-edit";
     }
 
