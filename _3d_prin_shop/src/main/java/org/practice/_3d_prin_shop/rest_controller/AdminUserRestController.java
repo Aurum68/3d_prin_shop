@@ -1,11 +1,14 @@
 package org.practice._3d_prin_shop.rest_controller;
 
+import org.practice._3d_prin_shop.dto.UserDto;
 import org.practice._3d_prin_shop.model.User;
 import org.practice._3d_prin_shop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/user")
@@ -17,6 +20,11 @@ public class AdminUserRestController {
     @Autowired
     public AdminUserRestController(UserService userService) {
         this.userService = userService;
+    }
+
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
     }
 
     @DeleteMapping("/{id}")

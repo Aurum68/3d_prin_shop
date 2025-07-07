@@ -25,12 +25,6 @@ public class UserRestController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/all")
-    public List<UserDto> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return userMapper.toDtoList(users);
-    }
-
     @GetMapping("/{id}")
     public UserDto getUserById(@PathVariable Long id) {
         return userMapper.userToUserDto(this.userService.getUserById(id));

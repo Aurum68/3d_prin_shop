@@ -17,8 +17,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,63 +37,6 @@ public class UserRestControllerTests {
     private UserMapper userMapper;
     @Autowired
     private ObjectMapper objectMapper;
-
-    @Test
-    @WithMockUser(username = "Bob", roles = {"user"})
-    void testGetAllUsers() throws Exception {
-        List<User> users = getUsers();
-
-        UserDto userDto1 = new UserDto();
-        userDto1.setId(1L);
-        userDto1.setUsername("Bob");
-        userDto1.setPassword("BobPassword");
-        userDto1.setEmail("Bob@gmail.com");
-
-        UserDto userDto2 = new UserDto();
-        userDto2.setId(2L);
-        userDto2.setUsername("Bill");
-        userDto2.setPassword("BillPassword");
-        userDto2.setEmail("Bill@gmail.com");
-
-        List<UserDto> userDtoList = Arrays.asList(userDto1, userDto2);
-
-        Mockito.when(userService.getAllUsers()).thenReturn(users);
-        Mockito.when(userMapper.toDtoList(users)).thenReturn(userDtoList);
-
-        mockMvc.perform(get("/api/user/all"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].username").value("Bob"))
-                .andExpect(jsonPath("$[0].password").value("BobPassword"))
-                .andExpect(jsonPath("$[0].email").value("Bob@gmail.com"))
-                .andExpect(jsonPath("$[1].id").value(2))
-                .andExpect(jsonPath("$[1].username").value("Bill"))
-                .andExpect(jsonPath("$[1].password").value("BillPassword"))
-                .andExpect(jsonPath("$[1].email").value("Bill@gmail.com"));
-
-        Mockito.verify(userService).getAllUsers();
-        Mockito.verify(userMapper).toDtoList(users);
-    }
-
-    private static List<User> getUsers() {
-        User user1 = new User();
-        user1.setId(1L);
-        user1.setUsername("Bob");
-        user1.setPassword("BobPassword");
-        user1.setEmail("Bob@gmail.com");
-        user1.setRole(Roles.ROLE_USER.getRole());
-
-        User user2 = new User();
-        user2.setId(2L);
-        user2.setUsername("Bill");
-        user2.setPassword("BillPassword");
-        user2.setEmail("Bill@gmail.com");
-        user2.setRole(Roles.ROLE_USER.getRole());
-
-        return Arrays.asList(user1, user2);
-    }
 
     @Test
     @WithMockUser(username = "Bob", roles = {"user"})
