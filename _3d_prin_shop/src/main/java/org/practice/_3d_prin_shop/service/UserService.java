@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -24,6 +25,10 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {return this.userRepository.findAll();}
+
+    public Optional<List<User>> getBlockedUsers() {
+        return userRepository.findByBlocked(true);
+    }
 
     public User getUserById(Long userId) {return this.userRepository.findById(userId).orElseThrow();}
 

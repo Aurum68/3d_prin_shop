@@ -35,6 +35,9 @@ public class UserViewControllerTest {
         User user = new User();
         user.setId(1L);
         user.setUsername("Bob");
+        user.setFirstName("Bob");
+        user.setLastName("Dilan");
+        user.setRole("user");
 
         UserDto userDto = new UserDto();
         userDto.setId(1L);

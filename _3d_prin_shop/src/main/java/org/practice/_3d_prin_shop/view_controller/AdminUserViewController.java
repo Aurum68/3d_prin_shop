@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin/users")
@@ -32,6 +33,17 @@ public class AdminUserViewController {
         List<UserDto> dtoList = userMapper.toDtoList(userService.getAllUsers());
         model.addAttribute("users", dtoList);
         return "admin/users";
+    }
+
+    @GetMapping("/blacklist")
+    public String blacklistUsers(Model model) {
+        Optional<List<User>> blockedUsers = userService.getBlockedUsers();
+        if (blockedUsers.isEmpty()) return "error/404";
+
+        List<UserDto> dtoList = userMapper.toDtoList(blockedUsers.get());
+        model.addAttribute("users", dtoList);
+        return "admin/blacklist";
+
     }
 
     @GetMapping("/{id}")
