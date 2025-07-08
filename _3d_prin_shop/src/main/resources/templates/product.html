@@ -2,32 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${product.name} + ' | Магазин'">Товар</title>
-    <style>
-        .product-image { max-width: 500px; height: auto; }
-        .add-to-cart { padding: 15px 30px; font-size: 18px; background: #4CAF50; color: white; border: none; cursor: pointer; }
-    </style>
+    <title>Product Details</title>
 </head>
 <body>
-    <header>
-        <nav>
-            <a th:href="@{/}">Главная</a>
-            <a th:href="@{/cart}">Корзина</a>
-            <a th:href="@{/login}">Войти</a>
-        </nav>
-    </header>
-    <main>
-        <div class="product">
-            <img th:src="@{${product.imageUrl}}" alt="Изображение товара" class="product-image">
-            <h1 th:text="${product.name}">Название товара</h1>
-            <p class="description" th:text="${product.description}">Описание товара.</p>
-            <p class="price">Цена: <strong th:text="${product.price} + ' ₽'">999 ₽</strong></p>
-            <form th:action="@{/cart/add}" method="post">
-                <input type="hidden" name="productId" th:value="${product.id}">
-                <button type="submit" class="add-to-cart">Добавить в корзину</button>
-            </form>
-        </div>
-    </main>
+    <h1 th:text="${product.name}"></h1>
+    <div th:if="${product}">
+        <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image" style="max-width: 300px;">
+        <p th:text="${product.description}"></p>
+        <p>Price: $<span th:text="${#numbers.formatDecimal(product.price, 1, 2)}"></span></p>
+        <p>Availability: <span th:if="${product.stock > 0}" style="color: green;">In Stock</span>
+                        <span th:unless="${product.stock > 0}" style="color: red;">Out of Stock</span></p>
+        
+        <form th:if="${product.stock > 0}" th:action="@{'/cart/add/' + ${product.id}}" method="post">
+            <input type="number" name="quantity" value="1" min="1" th:max="${product.stock}" style="width: 50px;">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+    <a th:href="@{/products}">Back to Products</a>
 </body>
 </html>
