@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>User Management - Admin</title>
 </head>
 <body>
-
+    <h1>User Management</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Registered</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.id}"></td>
+                <td><a th:href="@{'/admin/users/' + ${user.id}}" th:text="${user.name}"></a></td>
+                <td th:text="${user.email}"></td>
+                <td th:text="${user.role}"></td>
+                <td th:text="${#dates.format(user.registrationDate, 'dd MMM yyyy')}"></td>
+                <td>
+                    <a th:href="@{'/admin/users/' + ${user.id} + '/edit'}">Edit</a>
+                    <a th:href="@{'/admin/users/' + ${user.id} + '/orders'}">Orders</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/admin}">Back to Admin Panel</a>
 </body>
 </html>
