@@ -7,7 +7,7 @@
 <body>
     <h1 th:text="${product.name}"></h1>
     <div th:if="${product}">
-        <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image" style="max-width: 300px;">
+        <img th:src="@{'/images/' + ${product.image_url}}" alt="Product Image" style="max-width: 300px;">
         <p th:text="${product.description}"></p>
         <p>Price: $<span th:text="${#numbers.formatDecimal(product.price, 1, 2)}"></span></p>
         <p>Availability: <span th:if="${product.stock > 0}" style="color: green;">In Stock</span>
