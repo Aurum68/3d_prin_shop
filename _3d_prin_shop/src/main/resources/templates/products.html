@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Все продукты</title>
+    <meta charset="UTF-8">
+    <title>Products</title>
 </head>
 <body>
-<h1>Список продуктов</h1>
-<ul>
-  <li th:each="product : ${products}">
-    <span th:text="${product.name}"></span>
-    — <span th:text="${product.price}"></span> ₽
-  </li>
-</ul>
+    <h1>Products</h1>
+    <div>
+        <form th:action="@{/products}" method="get">
+            <input type="text" name="search" th:value="${param.search}" placeholder="Search products...">
+            <select name="category">
+                <option value="">All Categories</option>
+                <option th:each="c : ${categories}" th:value="${c}" th:text="${c}" th:selected="${c == param.category}"></option>
+            </select>
+            <button type="submit">Filter</button>
+        </form>
+    </div>
+    <div th:each="product : ${products}" style="display: inline-block; margin: 10px; width: 200px;">
+        <a th:href="@{'/products/' + ${product.id}}">
+            <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image" style="max-width: 100%; height: auto;">
+            <h3 th:text="${product.name}"></h3>
+            <p>$<span th:text="${#numbers.formatDecimal(product.price, 1, 2)}"></span></p>
+        </a>
+        <form th:if="${product.stock > 0}" th:action="@{'/cart/add/' + ${product.id}}" method="post" style="display: inline;">
+            <input type="hidden" name="quantity" value="1">
+            <button type="submit">Add to Cart</button>
+        </form>
+    </div>
+    <div th:if="${#lists.isEmpty(products)}">
+        <p>No products found.</p>
+    </div>
+    <a th:href="@{/}">Back to Home</a>
 </body>
 </html>
