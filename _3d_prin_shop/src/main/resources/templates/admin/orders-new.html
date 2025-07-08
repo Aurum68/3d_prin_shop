@@ -21,7 +21,7 @@
                 <td th:text="${order.id}"></td>
                 <td th:text="${order.user.name}"></td>
                 <td th:text="${#dates.format(order.orderDate, 'dd MMM yyyy')}"></td>
-                <td th:text="'$' + ${#numbers.formatDecimal(order.total, 1, 2)}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(order.total_price, 1, 2)}"></td>
                 <td><a th:href="@{'/admin/orders/' + ${order.id}}">Process</a></td>
             </tr>
         </tbody>
