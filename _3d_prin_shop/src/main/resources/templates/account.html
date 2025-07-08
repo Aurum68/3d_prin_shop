@@ -2,35 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Личный кабинет</title>
-    <style>
-        .account-info { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; }
-        .admin-panel { background: #f9f9f9; padding: 15px; margin-top: 20px; }
-    </style>
+    <title>My Account</title>
 </head>
 <body>
-    <header>
-        <nav>
-            <a th:href="@{/}">Главная</a>
-            <a th:href="@{/logout}">Выйти</a>
-        </nav>
-    </header>
-    <main>
-        <div class="account-info">
-            <h1>Личный кабинет</h1>
-            <p><strong>Имя:</strong> <span th:text="${user.name}">Иван Иванов</span></p>
-            <p><strong>Email:</strong> <span th:text="${user.email}">user@example.com</span></p>
-            <a th:href="@{/account/edit}">Редактировать данные</a>
-
-            <!-- Админ-панель (если пользователь — админ) -->
-            <div th:if="${user.isAdmin()}" class="admin-panel">
-                <h2>Админ-панель</h2>
-                <a th:href="@{/admin/products}">Управление товарами</a><br>
-                <a th:href="@{/admin/blacklist}">Чёрный список</a><br>
-                <a th:href="@{/admin/orders}">Обработка заказов</a>
-            </div>
-        </div>
-    </main>
+    <h1>My Account</h1>
+    <div th:if="${user}">
+        <p>Name: <span th:text="${user.name}"></span></p>
+        <p>Email: <span th:text="${user.email}"></span></p>
+        
+        <a th:href="@{/account/edit}">Edit Account</a>
+        <a th:href="@{/account/orders}">My Orders</a>
+    </div>
+    <a th:href="@{/}">Back to Home</a>
 </body>
 </html>
