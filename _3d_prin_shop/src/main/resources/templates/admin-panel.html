@@ -2,58 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Админ-панель</title>
-    <style>
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px; border: 1px solid #ddd; }
-        .btn-edit { background: #2196F3; color: white; }
-        .btn-delete { background: #f44336; color: white; }
-    </style>
+    <title>Admin Panel</title>
 </head>
 <body>
-    <header>
-        <nav>
-            <a th:href="@{/admin}">Админ-панель</a>
-            <a th:href="@{/logout}">Выйти</a>
-        </nav>
-    </header>
-    <main>
-        <h1>Админ-панель</h1>
-
-        <!-- Управление товарами -->
-        <h2>Товары</h2>
-        <a th:href="@{/admin/products/add}">Добавить товар</a>
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Название</th>
-                <th>Цена</th>
-                <th>Действия</th>
-            </tr>
-            <tr th:each="product : ${products}">
-                <td th:text="${product.id}">1</td>
-                <td th:text="${product.name}">Товар</td>
-                <td th:text="${product.price} + ' ₽'">999 ₽</td>
-                <td>
-                    <a th:href="@{/admin/products/edit/{id}(id=${product.id})}" class="btn-edit">Редактировать</a>
-                    <a th:href="@{/admin/products/delete/{id}(id=${product.id})}" class="btn-delete">Удалить</a>
-                </td>
-            </tr>
-        </table>
-
-        <!-- Чёрный список -->
-        <h2>Чёрный список</h2>
-        <form th:action="@{/admin/blacklist/add}" method="post">
-            <input type="email" name="email" placeholder="Email пользователя">
-            <button type="submit">Добавить</button>
-        </form>
-        <table>
-            <tr th:each="user : ${blacklist}">
-                <td th:text="${user.email}">spammer@example.com</td>
-                <td><a th:href="@{/admin/blacklist/delete/{id}(id=${user.id})}" class="btn-delete">Удалить</a></td>
-            </tr>
-        </table>
-    </main>
+    <h1>Admin Panel</h1>
+    <nav>
+        <ul>
+            <li><a th:href="@{/admin/products}">Products</a></li>
+            <li><a th:href="@{/admin/orders}">Orders</a></li>
+            <li><a th:href="@{/admin/users}">Users</a></li>
+            <li><a th:href="@{/admin/profile}">Profile</a></li>
+        </ul>
+    </nav>
+    <a th:href="@{/}">Back to Site</a>
 </body>
-</html>4
+</html>
