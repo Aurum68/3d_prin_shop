@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Edit User</title>
 </head>
 <body>
-
+    <h1>Edit User</h1>
+    <form th:action="@{'/account/edit'}" method="post" th:object="${userDto}">
+        <div th:if="${#fields.hasErrors('*')}">
+            <p style="color: red;" th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+        </div>
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" th:field="*{name}" required>
+        </div>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" th:field="*{email}" required>
+        </div>
+        <div>
+            <label for="currentPassword">Current Password (required for changes):</label>
+            <input type="password" id="currentPassword" name="currentPassword">
+        </div>
+        <div>
+            <label for="newPassword">New Password (leave blank to keep current):</label>
+            <input type="password" id="newPassword" name="newPassword">
+        </div>
+        <button type="submit">Save Changes</button>
+    </form>
+    <a th:href="@{/account}">Back to Account</a>
 </body>
 </html>
