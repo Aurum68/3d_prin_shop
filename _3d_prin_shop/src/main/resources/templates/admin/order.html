@@ -10,7 +10,7 @@
         <p>Order ID: <span th:text="${order.id}"></span></p>
         <p>User: <span th:text="${order.user.name}"></span></p>
         <p>Status: <span th:text="${order.status}"></span></p>
-        <p>Total: $<span th:text="${#numbers.formatDecimal(order.total, 1, 2)}"></span></p>
+        <p>Total: $<span th:text="${#numbers.formatDecimal(order.total_price, 1, 2)}"></span></p>
         
         <h3>Products:</h3>
         <ul th:each="item : ${order.items}">
