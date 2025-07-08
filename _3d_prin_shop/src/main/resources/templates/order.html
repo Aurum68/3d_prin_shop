@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Order Details</title>
 </head>
 <body>
-
+    <h1>Order Details</h1>
+    <div th:if="${order}">
+        <p>Order ID: <span th:text="${order.id}"></span></p>
+        <p>Date: <span th:text="${#dates.format(order.orderDate, 'dd MMM yyyy HH:mm')}"></span></p>
+        <p>Status: <span th:text="${order.status}"></span></p>
+        <p>Total: $<span th:text="${#numbers.formatDecimal(order.total, 1, 2)}"></span></p>
+        
+        <h3>Shipping Address:</h3>
+        <address th:text="${order.shippingAddress}"></address>
+        
+        <h3>Products:</h3>
+        <ul th:each="item : ${order.items}">
+            <li th:text="${item.product.name} + ' - ' + ${item.quantity} + ' x $' + ${#numbers.formatDecimal(item.price, 1, 2)}"></li>
+        </ul>
+    </div>
+    <a th:href="@{/account/orders}">Back to My Orders</a>
 </body>
 </html>
