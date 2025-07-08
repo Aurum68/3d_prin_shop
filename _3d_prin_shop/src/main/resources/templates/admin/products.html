@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Products - Admin</title>
 </head>
 <body>
-
+    <h1>Product Management</h1>
+    <a th:href="@{/admin/products/add}">Add New Product</a>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Category</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td><a th:href="@{'/admin/products/' + ${product.id}}" th:text="${product.name}"></a></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}"></td>
+                <td th:text="${product.stock}"></td>
+                <td th:text="${product.category}"></td>
+                <td>
+                    <a th:href="@{'/admin/products/' + ${product.id} + '/edit'}">Edit</a>
+                    <form th:action="@{'/admin/products/' + ${product.id} + '/delete'}" method="post" onsubmit="return confirm('Are you sure?')" style="display: inline;">
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/admin}">Back to Admin Panel</a>
 </body>
 </html>
