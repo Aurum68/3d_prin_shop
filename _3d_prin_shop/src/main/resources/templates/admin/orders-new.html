@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>New Orders - Admin</title>
 </head>
 <body>
-
+    <h1>New Orders</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}"></td>
+                <td th:text="${order.user.name}"></td>
+                <td th:text="${#dates.format(order.orderDate, 'dd MMM yyyy')}"></td>
+                <td th:text="'$' + ${#numbers.formatDecimal(order.total, 1, 2)}"></td>
+                <td><a th:href="@{'/admin/orders/' + ${order.id}}">Process</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/admin/orders}">View All Orders</a>
 </body>
 </html>
