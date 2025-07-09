@@ -1,10 +1,22 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Add Category - Admin</title>
 </head>
 <body>
-
+    <h1>Add New Category</h1>
+    
+    <form th:action="@{/admin/categories/add}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        
+        <div>
+            <label for="name">Category Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        
+        <button type="submit">Save</button>
+        <a th:href="@{/admin/categories}">Cancel</a>
+    </form>
 </body>
 </html>
