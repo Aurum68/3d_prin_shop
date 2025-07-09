@@ -42,10 +42,18 @@ public class UserService {
 
         Cart cart = new Cart();
         cart.setUser(user);
-        cart.setId(user.getId());
         this.cartRepository.save(cart);
 
+        user.setCart(cart);
+
+        this.userRepository.save(user);
+        minLog(this.getUserByUsername(user.getUsername()));
         return user;
+    }
+
+    private void minLog(User user) {
+        System.err.println(user.getEmail());
+        System.err.println(user.getPassword());
     }
 
     public User updateUserById(Long id, User user) {

@@ -32,7 +32,7 @@ public class User {
     private String lastName;
 
     @Column
-    private boolean isBlocked;
+    private boolean blocked;
 
     @Column
     private String blockedReason;

@@ -73,14 +73,6 @@ CREATE TABLE order_items (
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
--- Таблица чёрного списка (опционально)
-CREATE TABLE blacklist (
-    id bigint PRIMARY KEY auto_increment,
-    user_id BIGINT NOT NULL UNIQUE,
-    reason VARCHAR(255),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
-);
-
 -- Таблица категорий
 CREATE TABLE categories (
     id bigint PRIMARY KEY auto_increment,

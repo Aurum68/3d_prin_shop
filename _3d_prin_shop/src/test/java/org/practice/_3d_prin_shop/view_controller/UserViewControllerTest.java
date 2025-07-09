@@ -54,4 +54,31 @@ public class UserViewControllerTest {
         Mockito.verify(userService).getUserById(1L);
         Mockito.verify(userMapper).userToUserDto(user);
     }
+
+    @Test
+    @WithMockUser(username = "Bob", roles = {"user"})
+    void testUserProfile_failure() throws Exception {
+        Mockito.when(userService.getUserById(1L)).thenReturn(null);
+        Mockito.when(userMapper.userToUserDto(null)).thenReturn(null);
+
+        mockMvc.perform(get("/user-profile/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error/404"));
+
+        Mockito.verify(userService).getUserById(1L);
+        Mockito.verify(userMapper).userToUserDto(null);
+    }
+
+    @Test
+    @WithMockUser(username = "Bob", roles = {"user"})
+    void testUserProfileEdit_successGet() throws Exception {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("Bob");
+        user.setFirstName("Bob");
+        user.setLastName("Dilan");
+        user.setRole("user");
+
+        
+    }
 }
