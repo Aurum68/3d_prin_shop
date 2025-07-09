@@ -47,7 +47,7 @@
         </table>
         <a th:href="@{/checkout}">Proceed to Checkout</a>
     </div>
-    <div th:if="#lists.isEmpty(cart.items)}">
+    <div th:if="${#lists.isEmpty(cart.items)}">
         <p>Your cart is empty.</p>
     </div>
     <a th:href="@{/}">Continue Shopping</a>
