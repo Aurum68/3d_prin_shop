@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Categories - Admin</title>
 </head>
 <body>
-
+    <h1>Categories Management</h1>
+    <a th:href="@{/admin/categories/add}">Add New Category</a>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Products Count</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="category : ${categories}">
+                <td th:text="${category.id}"></td>
+                <td th:text="${category.name}"></td>
+                <td th:text="${category.products.size()}"></td>
+                <td>
+                    <a th:href="@{'/admin/categories/' + ${category.id} + '/edit'}">Edit</a>
+                    <form th:action="@{'/admin/categories/' + ${category.id} + '/delete'}" method="post" onsubmit="return confirm('Delete this category?')" style="display: inline;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <a th:href="@{/admin}">Back to Admin Panel</a>
 </body>
 </html>
