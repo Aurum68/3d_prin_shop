@@ -11,7 +11,7 @@
             <input type="text" name="search" th:value="${param.search}" placeholder="Search products...">
             <select name="category">
                 <option value="">All Categories</option>
-                <option th:each="c : ${categories}" th:value="${c}" th:text="${c}" th:selected="${c == param.category}"></option>
+                <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}" th:selected="${c.id == param.category}"></option>
             </select>
             <button type="submit">Filter</button>
         </form>
