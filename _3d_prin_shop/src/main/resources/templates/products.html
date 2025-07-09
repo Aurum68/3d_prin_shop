@@ -18,7 +18,7 @@
     </div>
     <div th:each="product : ${products}" style="display: inline-block; margin: 10px; width: 200px;">
         <a th:href="@{'/products/' + ${product.id}}">
-            <img th:src="@{'/images/' + ${product.imageUrl}}" alt="Product Image" style="max-width: 100%; height: auto;">
+            <img th:src="@{'/images/' + ${product.image_url}}" alt="Product Image" style="max-width: 100%; height: auto;">
             <h3 th:text="${product.name}"></h3>
             <p>$<span th:text="${#numbers.formatDecimal(product.price, 1, 2)}"></span></p>
         </a>
