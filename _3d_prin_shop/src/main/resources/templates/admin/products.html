@@ -28,6 +28,7 @@
                 <td>
                     <a th:href="@{'/admin/products/' + ${product.id} + '/edit'}">Edit</a>
                     <form th:action="@{'/admin/products/' + ${product.id} + '/delete'}" method="post" onsubmit="return confirm('Are you sure?')" style="display: inline;">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <button type="submit">Delete</button>
                     </form>
                 </td>
