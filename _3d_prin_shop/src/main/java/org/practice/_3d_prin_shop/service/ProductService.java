@@ -24,6 +24,15 @@ public class ProductService {
         return this.productRepository.getProductById(id);
     }
 
+    public List<Product> getProductsByCategory(Long categoryId) {
+        return productRepository.searchProducts(null, categoryId);
+    }
+
+    public List<Product> searchProducts(String keyword, Long categoryId) {
+        String txt = (keyword == null || keyword.isEmpty()) ? null : keyword;
+        return productRepository.searchProducts(txt, categoryId);
+    }
+
     public Product addProduct(Product product) {
         try {
             return this.productRepository.save(product);

@@ -12,6 +12,7 @@ public class ProductDto {
     private String name;
     private String description;
     private BigDecimal price;
+    private Long categoryId;
     private int stock;
     private String image_url;
 }
