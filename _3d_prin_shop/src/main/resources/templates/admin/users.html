@@ -20,13 +20,17 @@
         <tbody>
             <tr th:each="user : ${users}">
                 <td th:text="${user.id}"></td>
-                <td><a th:href="@{'/admin/users/' + ${user.id}}" th:text="${user.name}"></a></td>
+                <td><a th:href="@{'/admin/users/' + ${user.id}}" th:text="${user.firstName + ' ' + user.lastName}"></a></td>
                 <td th:text="${user.email}"></td>
                 <td th:text="${user.role}"></td>
-                <td th:text="${#dates.format(user.registrationDate, 'dd MMM yyyy')}"></td>
                 <td>
-                    <a th:href="@{'/admin/users/' + ${user.id} + '/edit'}">Edit</a>
-                    <a th:href="@{'/admin/users/' + ${user.id} + '/orders'}">Orders</a>
+                    <div th:if="${user.blocked}">
+                        <a th:href="@{/admin/users/{id}/unblock(id=${user.id})}">Block</a>
+                    </div>
+                    <div th:unless="${user.blocked}">
+                        <a th:href="@{/admin/users/{id}/block(id=${user.id})}">Block</a>
+                    </div>
+                    <a th:href="@{/admin/order/orders_of/{id}(id=${user.id})}">Orders</a>
                 </td>
             </tr>
         </tbody>

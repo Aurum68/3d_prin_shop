@@ -20,10 +20,10 @@
                 <td th:text="${order.id}"></td>
                 <td th:text="'$' + ${#numbers.formatDecimal(order.total_price, 1, 2)}"></td>
                 <td th:text="${order.status}"></td>
-                <td><a th:href="@{'/orders/' + ${order.id}}">View</a></td>
+                <td><a th:href="@{'/order/' + ${order.id}}">View</a></td>
             </tr>
         </tbody>
     </table>
-    <a th:href="@{/account}">Back to Account</a>
+    <a th:href="@{/account/{id}(id=${#authentication.principal.id})}">Back to Account</a>
 </body>
 </html>

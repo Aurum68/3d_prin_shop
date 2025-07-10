@@ -124,10 +124,10 @@ public class CartRestControllerTests {
 
         int newQuantity = 5;
 
-        cart.setCartItems(List.of(cartItem));
+        cart.setItems(List.of(cartItem));
 
         Mockito.when(cartService.updateCartItemQuantity(1L, 1L, newQuantity)).thenAnswer(
-                invocationOnMock -> {cart.getCartItems().getFirst().setQuantity(cartItem.getQuantity() + newQuantity);
+                invocationOnMock -> {cart.getItems().getFirst().setQuantity(cartItem.getQuantity() + newQuantity);
                                                     return cart;}
         );
 

@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Edit User</h1>
-    <form th:action="@{'/account/edit'}" method="post" th:object="${userDto}">
+    <form th:action="@{'/account/' + ${userDto.id} +'/edit'}" method="post" th:object="${userDto}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div th:if="${#fields.hasErrors('*')}">
             <p style="color: red;" th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
@@ -37,6 +37,6 @@
         </div>
         <button type="submit">Save Changes</button>
     </form>
-    <a th:href="@{/account}">Back to Account</a>
+    <a th:href="@{'/account/' + ${#authentication.principal.id}}">Back to Account</a>
 </body>
 </html>

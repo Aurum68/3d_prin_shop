@@ -59,7 +59,7 @@ public class CartServiceTests {
 
         List<CartItem> cartItems = new ArrayList<>();
 
-        cart.setCartItems(cartItems);
+        cart.setItems(cartItems);
 
         Mockito.when(cartRepository.findById(1L)).thenReturn(Optional.of(cart));
         Mockito.when(cartRepository.save(cart)).thenReturn(cart);
@@ -73,9 +73,9 @@ public class CartServiceTests {
         }
 
         Assertions.assertEquals(cart, result);
-        Assertions.assertEquals(1, cart.getCartItems().size());
+        Assertions.assertEquals(1, cart.getItems().size());
 
-        CartItem cartItem = cart.getCartItems().getFirst();
+        CartItem cartItem = cart.getItems().getFirst();
 
         Assertions.assertEquals(product, cartItem.getProduct());
         Assertions.assertEquals(quantity, cartItem.getQuantity());
@@ -103,7 +103,7 @@ public class CartServiceTests {
 
         List<CartItem> cartItems = new ArrayList<>();
 
-        cart.setCartItems(cartItems);
+        cart.setItems(cartItems);
 
         Mockito.when(cartRepository.findById(1L)).thenReturn(Optional.of(cart));
 
@@ -132,7 +132,7 @@ public class CartServiceTests {
         cartItem.setQuantity(quantity);
         cartItem.setCart(cart);
 
-        cart.setCartItems(List.of(cartItem));
+        cart.setItems(List.of(cartItem));
 
         Mockito.when(cartRepository.findById(1L)).thenReturn(Optional.of(cart));
         Mockito.when(cartRepository.save(cart)).thenReturn(cart);
@@ -149,8 +149,8 @@ public class CartServiceTests {
         }
 
         Assertions.assertEquals(cart, result);
-        Assertions.assertEquals(1, cart.getCartItems().size());
-        Assertions.assertEquals(addedQuantity + quantity, cart.getCartItems().getFirst().getQuantity());
+        Assertions.assertEquals(1, cart.getItems().size());
+        Assertions.assertEquals(addedQuantity + quantity, cart.getItems().getFirst().getQuantity());
 
         Mockito.verify(cartItemService).updateCartItem(cartItem.getId(), cartItem);
         Mockito.verify(cartItemService, Mockito.never()).addCartItem(Mockito.any());
@@ -178,7 +178,7 @@ public class CartServiceTests {
         cartItem.setQuantity(quantity);
         cartItem.setCart(cart);
 
-        cart.setCartItems(List.of(cartItem));
+        cart.setItems(List.of(cartItem));
 
         Mockito.when(cartRepository.findById(1L)).thenReturn(Optional.of(cart));
 
@@ -201,7 +201,7 @@ public class CartServiceTests {
         cartItem.setCart(cart);
 
         cartItems.add(cartItem);
-        cart.setCartItems(cartItems);
+        cart.setItems(cartItems);
 
         Mockito.when(cartRepository.findById(1L)).thenReturn(Optional.of(cart));
         Mockito.when(cartRepository.save(cart)).thenReturn(cart);

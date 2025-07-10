@@ -5,6 +5,8 @@ import org.practice._3d_prin_shop.repository.OrderItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+
 @Service
 public class OrderItemService {
     private final OrderItemRepository orderItemRepository;

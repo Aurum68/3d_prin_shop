@@ -1,5 +1,6 @@
 package org.practice._3d_prin_shop.security;
 
+import org.practice._3d_prin_shop.config.CustomAuthSuccessHandler;
 import org.practice._3d_prin_shop.util.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,9 +17,13 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
 
     private final UserDetailsServiceImpl userDetailsService;
+    private final CustomAuthSuccessHandler customAuthSuccessHandler;
 
     @Autowired
-    public SecurityConfiguration(UserDetailsServiceImpl userDetailsService) {this.userDetailsService = userDetailsService;}
+    public SecurityConfiguration(UserDetailsServiceImpl userDetailsService, CustomAuthSuccessHandler customAuthSuccessHandler) {
+        this.userDetailsService = userDetailsService;
+        this.customAuthSuccessHandler = customAuthSuccessHandler;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -28,16 +33,17 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+               .userDetailsService(userDetailsService)
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/", "/api/products","/api/products/**", "/products/**", "/login", "/register", "/css/**", "/images/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/add").permitAll()
-                        .requestMatchers("/admin/**", "/api/admin/**").hasRole(Roles.ROLE_ADMIN.getRole())
+                        .requestMatchers("/admin","/admin/**", "/api/admin/**").hasRole(Roles.ROLE_ADMIN.getRole())
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/")
+                        .successHandler(customAuthSuccessHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout

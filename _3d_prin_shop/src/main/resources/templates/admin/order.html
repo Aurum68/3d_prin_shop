@@ -8,16 +8,16 @@
     <h1>Order Details</h1>
     <div th:if="${order}">
         <p>Order ID: <span th:text="${order.id}"></span></p>
-        <p>User: <span th:text="${order.user.name}"></span></p>
+        <p>User: <span th:text="${order.user.username}"></span></p>
         <p>Status: <span th:text="${order.status}"></span></p>
         <p>Total: $<span th:text="${#numbers.formatDecimal(order.total_price, 1, 2)}"></span></p>
         
         <h3>Products:</h3>
-        <ul th:each="item : ${order.items}">
+        <ul th:each="item : ${order.orderItems}">
             <li th:text="${item.product.name} + ' - ' + ${item.quantity} + ' x $' + ${#numbers.formatDecimal(item.price, 1, 2)}"></li>
         </ul>
         
-        <form th:action="@{'/admin/orders/' + ${order.id} + '/update-status'}" method="post">
+        <form th:action="@{'/admin/order/' + ${order.id} + '/update-status'}" method="post">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <select name="status">
                 <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}" th:selected="${s == order.status}"></option>
@@ -25,6 +25,6 @@
             <button type="submit">Update Status</button>
         </form>
     </div>
-    <a th:href="@{/admin/orders}">Back to Orders</a>
+    <a th:href="@{/admin/order/all}">Back to Orders</a>
 </body>
 </html>

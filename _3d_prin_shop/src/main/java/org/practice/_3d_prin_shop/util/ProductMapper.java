@@ -11,7 +11,11 @@ import java.util.List;
 public interface ProductMapper {
     @Mapping(source = "id", target = "id")
     @Mapping(source = "category.id", target = "categoryId")
+    @Mapping(target = "image_url", ignore = true)
     ProductDto productToProductDto(Product product);
+
+    @Mapping(target = "category", ignore = true)
+    @Mapping(target = "image_url", ignore = true)
     Product productDtoToProduct(ProductDto productDto);
     List<ProductDto> toDtoList(List<Product> products);
 }

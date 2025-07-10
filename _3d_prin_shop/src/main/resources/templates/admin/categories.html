@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Categories Management</h1>
-    <a th:href="@{/admin/categories/add}">Add New Category</a>
+    <a th:href="@{/admin/category/add}">Add New Category</a>
     
     <table>
         <thead>
@@ -23,8 +23,8 @@
                 <td th:text="${category.name}"></td>
                 <td th:text="${category.products.size()}"></td>
                 <td>
-                    <a th:href="@{'/admin/categories/' + ${category.id} + '/edit'}">Edit</a>
-                    <form th:action="@{'/admin/categories/' + ${category.id} + '/delete'}" method="post" onsubmit="return confirm('Delete this category?')" style="display: inline;">
+                    <a th:href="@{'/admin/category/' + ${category.id} + '/edit'}">Edit</a>
+                    <form th:action="@{'/admin/category/' + ${category.id} + '/delete'}" method="post" onsubmit="return confirm('Delete this category?')" style="display: inline;">
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                         <button type="submit">Delete</button>
                     </form>

@@ -38,22 +38,26 @@ public class UserService {
         user.setRole(Roles.ROLE_USER.getRole());
         user.setBlocked(false);
         user.setCreated_at(LocalDateTime.now());
-        this.userRepository.save(user);
 
         Cart cart = new Cart();
         cart.setUser(user);
-        this.cartRepository.save(cart);
-
         user.setCart(cart);
 
-        this.userRepository.save(user);
-        minLog(this.getUserByUsername(user.getUsername()));
-        return user;
+        User saved = userRepository.save(user);
+        System.err.println("User id: " + saved.getId());
+        System.err.println("User cart: " + saved.getCart().getId());
+        User savedUser = this.userRepository.save(user);
+        cartRepository.findAll().forEach(c ->
+        System.err.println("cart id: " + c.getId() + ", user id: " +
+                (c.getUser() != null ? c.getUser().getId() : "null"))
+                );
+        return savedUser;
     }
 
-    private void minLog(User user) {
-        System.err.println(user.getEmail());
-        System.err.println(user.getPassword());
+    public void printAllUsers() {
+        userRepository.findAll().forEach(user -> {
+            System.out.println(user.getEmail() + " | " + user.getPassword() + " | " + user.getRole());
+        });
     }
 
     public User updateUserById(Long id, User user) {
@@ -83,6 +87,8 @@ public class UserService {
     }
 
     public void deleteUserById(Long id) {
+
         this.userRepository.deleteById(id);
+        this.cartRepository.deleteById(id);
     }
 }

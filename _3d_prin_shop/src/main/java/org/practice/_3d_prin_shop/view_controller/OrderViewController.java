@@ -6,9 +6,8 @@ import org.practice._3d_prin_shop.util.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -33,10 +32,17 @@ public class OrderViewController {
         return "order";
     }
 
-    @GetMapping("/orders_of{userId}")
+    @GetMapping("/orders_of/{userId}")
     public String showOrdersOfUser(@PathVariable Long userId, Model model) {
         List<Order> orders = orderService.getByUserId(userId);
         model.addAttribute("orders", orderMapper.toDtoList(orders));
         return "orders";
+    }
+
+    @PostMapping("/create/{cartId}")
+    public String createOrder(@PathVariable Long cartId, RedirectAttributes redirectAttributes) {
+        Order order = orderService.createOrderFromCart(cartId);
+        redirectAttributes.addFlashAttribute("order", orderMapper.orderToOrderDto(order));
+        return "redirect:/order/" + order.getId();
     }
 }

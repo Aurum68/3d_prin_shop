@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -24,12 +25,14 @@ public class CartService {
 
     public Cart getCartById(Long userId) {return cartRepository.findById(userId).orElseThrow();}
 
+
+
     public Cart addItemToCart(Long cartId, Product product, int quantity) throws AccessDeniedException {
         Cart cart = getCartById(cartId);
 
         if (cart.getUser().isBlocked()) throw new AccessDeniedException(String.format("Вы заблокированы. Причина: %s", cart.getUser().getBlockedReason()));
 
-        Optional<CartItem> byProduct = cart.getCartItems().stream()
+        Optional<CartItem> byProduct = cart.getItems().stream()
                 .filter(item -> item.getProduct().equals(product))
                 .findFirst();
 
@@ -45,7 +48,8 @@ public class CartService {
             item.setCart(cart);
             cartItemService.addCartItem(item);
 
-            cart.getCartItems().add(item);
+            cart.getItems().add(item);
+            cart.setTotal_price(getCartTotal(cartId));
             cartRepository.save(cart);
         }
         return cart;
@@ -58,13 +62,28 @@ public class CartService {
 
         cartItem.setQuantity(quantity);
         cartItemService.updateCartItem(cartItem.getId(), cartItem);
+
+        cart.setTotal_price(getCartTotal(cartId));
         cartRepository.save(cart);
         return cart;
     }
+
+
 
     public void deleteCartItem(Long cartId, Long cartItemId) {
         Cart cart = getCartById(cartId);
         if (!cartItemService.getCartItemById(cartItemId).getCart().equals(cart)) throw new RuntimeException("CartItem is not in the cart");
         cartItemService.deleteCartItem(cartItemId);
+        cart.setTotal_price(getCartTotal(cartId));
+        cartRepository.save(cart);
+    }
+
+    private BigDecimal getCartTotal(Long cartId) {
+        Cart cart = getCartById(cartId);
+        BigDecimal total = new BigDecimal(0);
+        for (CartItem item : cart.getItems()) {
+            total = total.add(item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity())));
+        }
+        return total;
     }
 }

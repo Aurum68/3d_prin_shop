@@ -27,15 +27,15 @@
         <div>
             <label for="category">Category:</label>
             <select id="category" name="category" required>
-                <option th:each="c : ${categories}" th:value="${c}" th:text="${c}"></option>
+                <option th:each="c : ${categories}" th:value="${c.id}" th:text="${c.name}"></option>
             </select>
         </div>
         <div>
-            <label for="image">Image:</label>
+            <label for="image_url">Image:</label>
             <input type="file" id="image_url" name="image_url" accept="image/*">
         </div>
         <button type="submit">Add Product</button>
     </form>
-    <a th:href="@{/admin/products}">Back to Products</a>
+    <a th:href="@{/admin/products/}">Back to Products</a>
 </body>
 </html>

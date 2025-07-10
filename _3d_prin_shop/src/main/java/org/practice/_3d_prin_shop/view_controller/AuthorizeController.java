@@ -29,6 +29,7 @@ public class AuthorizeController {
 
     @GetMapping("/login")
     public String loginPage() {
+        userService.printAllUsers();
         return "login";
     }
 
@@ -53,6 +54,7 @@ public class AuthorizeController {
         }
 
         User user = userMapper.userDtoToUser(userDto);
+        System.err.println(user.getPassword());
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);

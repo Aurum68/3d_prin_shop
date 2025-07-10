@@ -1,10 +1,8 @@
 package org.practice._3d_prin_shop.service;
 
 import org.practice._3d_prin_shop.dto.OrderDto;
-import org.practice._3d_prin_shop.model.Order;
-import org.practice._3d_prin_shop.model.OrderItem;
-import org.practice._3d_prin_shop.model.Product;
-import org.practice._3d_prin_shop.model.User;
+import org.practice._3d_prin_shop.model.*;
+import org.practice._3d_prin_shop.repository.CartRepository;
 import org.practice._3d_prin_shop.repository.OrderRepository;
 import org.practice._3d_prin_shop.repository.UserRepository;
 import org.practice._3d_prin_shop.util.OrderMapper;
@@ -15,6 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,13 +23,15 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
+    private final CartRepository cartRepository;
     private final UserRepository userRepository;
     private final OrderMapper orderMapper;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, UserRepository userRepository, OrderMapper orderMapper) {
+    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CartRepository cartRepository, UserRepository userRepository, OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
         this.orderItemService = orderItemService;
+        this.cartRepository = cartRepository;
         this.userRepository = userRepository;
         this.orderMapper = orderMapper;
     }
@@ -48,6 +49,30 @@ public class OrderService {
     }
 
     public Order getOrderById(Long id) {return orderRepository.findById(id).orElseThrow();}
+
+    public Order createOrderFromCart(Long cartId) {
+        Cart cart = cartRepository.findById(cartId).orElseThrow();
+        Order order = new Order();
+        List<OrderItem> orderItems = new ArrayList<>();
+
+        for (CartItem item : cart.getItems()){
+            OrderItem newOrderItem = new OrderItem();
+            newOrderItem.setProduct(item.getProduct());
+            newOrderItem.setQuantity(item.getQuantity());
+            newOrderItem.setPrice(item.getProduct().getPrice().multiply(new BigDecimal(item.getQuantity())));
+            newOrderItem.setOrder(order);
+            orderItems.add(newOrderItem);
+        }
+        order.setOrderItems(orderItems);
+        order.setStatus(OrderStatus.PENDING_APPROVAL.getStatus());
+        order.setUser(userRepository.findById(cart.getUser().getId()).orElseThrow());
+
+        BigDecimal tp = orderItems.stream()
+                        .map(OrderItem::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        order.setTotal_price(tp);
+        return orderRepository.save(order);
+    }
 
     public Order createOrder(OrderDto orderDto) throws AccessDeniedException {
         Order order = prepareOrder(orderDto);

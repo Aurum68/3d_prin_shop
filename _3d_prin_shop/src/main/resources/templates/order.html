@@ -16,6 +16,6 @@
             <li th:text="${item.product.name} + ' - ' + ${item.quantity} + ' x $' + ${#numbers.formatDecimal(item.price, 1, 2)}"></li>
         </ul>
     </div>
-    <a th:href="@{/account/orders}">Back to My Orders</a>
+    <a th:href="@{/order/orders_of/{userId}(userId=${#authentication.principal.id})}">Back to My Orders</a>
 </body>
 </html>

@@ -7,11 +7,12 @@
 <body>
     <h1>My Account</h1>
     <div th:if="${user}">
-        <p>Name: <span th:text="${user.name}"></span></p>
+        <p>Name: <span th:text="${user.firstName}"></span></p>
+        <p>Surname: <span th:text="${user.lastName}"></span></p>
         <p>Email: <span th:text="${user.email}"></span></p>
-        
-        <a th:href="@{/account/edit}">Edit Account</a>
-        <a th:href="@{/account/orders}">My Orders</a>
+
+        <a th:href="@{/account/{id}/edit(id=${user.id})}">Edit Account</a>
+        <a th:href="@{/order/orders_of/{userId}(userId=${user.id})}">My Orders</a>
     </div>
     <a th:href="@{/}">Back to Home</a>
 </body>

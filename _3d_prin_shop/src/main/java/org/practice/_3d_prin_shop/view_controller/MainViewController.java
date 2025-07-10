@@ -12,4 +12,9 @@ public class MainViewController {
     public String index() {
         return "redirect:/products";
     }
+
+    @GetMapping("checkout")
+    public String checkout() {
+        return "redirect:/";
+    }
 }

@@ -1,6 +1,8 @@
 package org.practice._3d_prin_shop.service;
 
+import org.practice._3d_prin_shop.model.Cart;
 import org.practice._3d_prin_shop.model.CartItem;
+import org.practice._3d_prin_shop.model.Product;
 import org.practice._3d_prin_shop.repository.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,4 +37,11 @@ public class CartItemService {
     public List<CartItem> getAllCartItems() {return cartItemRepository.findAll();}
 
     public CartItem getCartItemById(Long id) {return cartItemRepository.findById(id).orElseThrow();}
+
+    public CartItem getCartItemByCartAndProduct(Cart cart, Product product) {
+        return cartItemRepository.findAll().stream().filter(
+                cartItem -> cartItem.getCart().getId().equals(cart.getId()) &&
+                        cartItem.getProduct().getId().equals(product.getId())
+        ).findFirst().orElse(null);
+    }
 }

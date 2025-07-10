@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -16,11 +17,14 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private BigDecimal total_price;
+
     @OneToOne
     @JoinColumn(name = "user_id", unique = true, nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "cart")
-    private List<CartItem> cartItems;
+    private List<CartItem> items;
 
 }

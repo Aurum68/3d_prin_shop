@@ -14,7 +14,7 @@ public class OrderDto {
     private Long id;
 
     private Long userId;
-    private List<OrderItem> orderItems;
+    private List<OrderItem> items;
 
     @Setter(AccessLevel.NONE)
     private String status;
