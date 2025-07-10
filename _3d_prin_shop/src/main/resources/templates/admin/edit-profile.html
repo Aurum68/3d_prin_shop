@@ -10,8 +10,12 @@
     <form th:action="@{/admin/profile/edit}" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" th:value="${user.name}">
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstName" th:value="${user.firstName}">
+        </div>
+        <div>
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" name="lastName" th:value="${user.lastName}">
         </div>
         <div>
             <label for="email">Email:</label>

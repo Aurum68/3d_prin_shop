@@ -68,14 +68,22 @@ public class CartService {
         return cart;
     }
 
-
-
     public void deleteCartItem(Long cartId, Long cartItemId) {
         Cart cart = getCartById(cartId);
         if (!cartItemService.getCartItemById(cartItemId).getCart().equals(cart)) throw new RuntimeException("CartItem is not in the cart");
         cartItemService.deleteCartItem(cartItemId);
         cart.setTotal_price(getCartTotal(cartId));
         cartRepository.save(cart);
+    }
+
+    public Cart clearCart(Long cartId) {
+        Cart cart = getCartById(cartId);
+        for (CartItem item : cart.getItems()) {
+            cartItemService.deleteCartItem(item.getId());
+        }
+        cart.getItems().clear();
+        cart.setTotal_price(getCartTotal(cartId));
+        return cartRepository.save(cart);
     }
 
     private BigDecimal getCartTotal(Long cartId) {

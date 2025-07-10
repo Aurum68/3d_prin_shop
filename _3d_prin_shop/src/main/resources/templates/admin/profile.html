@@ -8,11 +8,10 @@
 <body>
     <h1>Admin Profile</h1>
     <div th:if="${user}">
-        <p>Name: <span th:text="${user.name}"></span></p>
+        <p>Name: <span th:text="${user.firstName + ' ' + user.lastName}"></span></p>
         <p>Email: <span th:text="${user.email}"></span></p>
         <p>Role: <span th:text="${user.role}"></span></p>
-        <p>Registered: <span th:text="${#dates.format(user.registrationDate, 'dd MMM yyyy')}"></span></p>
-        
+
         <a th:href="@{/admin/profile/edit}">Edit Profile</a>
     </div>
     <a th:href="@{/admin}">Back to Admin Panel</a>

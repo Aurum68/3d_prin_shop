@@ -24,14 +24,17 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderItemService orderItemService;
     private final CartRepository cartRepository;
+    private final CartService cartService;
     private final UserRepository userRepository;
     private final OrderMapper orderMapper;
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CartRepository cartRepository, UserRepository userRepository, OrderMapper orderMapper) {
+    public OrderService(OrderRepository orderRepository, OrderItemService orderItemService, CartRepository cartRepository, CartService cartService, UserRepository userRepository, OrderMapper orderMapper) {
         this.orderRepository = orderRepository;
         this.orderItemService = orderItemService;
         this.cartRepository = cartRepository;
+        this.cartService = cartService;
+
         this.userRepository = userRepository;
         this.orderMapper = orderMapper;
     }
@@ -63,6 +66,7 @@ public class OrderService {
             newOrderItem.setOrder(order);
             orderItems.add(newOrderItem);
         }
+        cartService.clearCart(cartId);
         order.setOrderItems(orderItems);
         order.setStatus(OrderStatus.PENDING_APPROVAL.getStatus());
         order.setUser(userRepository.findById(cart.getUser().getId()).orElseThrow());

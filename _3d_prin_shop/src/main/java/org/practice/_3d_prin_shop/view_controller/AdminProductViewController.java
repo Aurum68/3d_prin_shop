@@ -105,7 +105,7 @@ public class AdminProductViewController {
         }
         productService.updateProduct(id, newProduct);
         redirectAttributes.addFlashAttribute("success", "Product updated successfully");
-        return "redirect:/admin/products";
+        return "redirect:/admin/products/";
     }
 
     private String saveImage(MultipartFile image) throws IOException {
